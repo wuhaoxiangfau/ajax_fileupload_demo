@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+
+<form name="myForm"  enctype="multipart/form-data">
+    <input type="text" name="userName">
+    <input type="file" name="img">
+    <input type="button" id="btn" value="submit">
+</form>
+
+
+<script src="js/jquery-2.1.4.min.js"></script>
+<script>
+    $('#btn').click(function () {
+        var userName = document.myForm.userName.value;
+        var img = document.myForm.img.files[0];
+        console.log(userName+","+img);
+
+        var fm = new FormData();//这个数据格式很重要
+        fm.append('afile', img);
+        fm.append('username', userName);
+        fm.append("accountnum", 123456);
+        $.ajax(
+                {
+                    url: 'data/upload.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: fm,
+                    contentType: false, //禁止设置请求类型
+                    processData: false, //禁止jquery对DAta数据的处理,默认会处理
+                    //禁止的原因是,FormData已经帮我们做了处理
+                    success: function (result) {
+                        //测试是否成功
+                        //但需要你后端有返回值
+                        console.log(result);
+                    }
+                }
+        );
+    });
+
+</script>
+</body>
+</html>
